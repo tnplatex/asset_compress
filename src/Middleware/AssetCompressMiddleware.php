@@ -75,6 +75,10 @@ class AssetCompressMiddleware implements MiddlewareInterface
         }
         $build = $assets->get($targetName);
 
+        if ($build->isStatic()) {
+            return $handler->handle($request);
+        }
+
         try {
             $compiler = $factory->cachedCompiler();
             $contents = $compiler->generate($build);

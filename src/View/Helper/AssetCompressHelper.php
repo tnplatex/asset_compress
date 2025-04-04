@@ -310,8 +310,15 @@ class AssetCompressHelper extends Helper
             $route = $path . $this->_getBuildName($target);
         }
         if ($devMode || $config->general('alwaysEnableController')) {
-            $route = $this->_getRoute($target, $path);
+            if ($target->isStatic()) {
+                $path = rtrim($path, '/') . '/';
+                $route = $path . $this->_getBuildName($target);
+            } else {
+                $route = $this->_getRoute($target, $path);
+            }
         }
+
+
         $route = str_replace(DS, '/', $route);
 
         if ($options['full']) {
